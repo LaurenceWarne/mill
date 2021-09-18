@@ -44,8 +44,7 @@ object DockerModuleTest extends TestSuite {
   val testModuleSourcesPath: Path =
     os.pwd / "contrib" / "docker" / "test" / "resources" / "docker"
 
-  val lineSep = sys.props("line.separator")
-  val multineRegex = s"($lineSep)+".r
+  val multineRegex = "\\R+".r
 
   private def isInstalled(executable: String): Boolean = {
     val getPathCmd = if (scala.util.Properties.isWin) "where" else "which"
@@ -100,11 +99,11 @@ object DockerModuleTest extends TestSuite {
             |FROM gcr.io/distroless/java:latest
             |COPY out.jar /out.jar
             |ENTRYPOINT ["java", "-jar", "/out.jar"]""".stripMargin,
-          lineSep
+          sys.props("line.separator")
         )
         val dockerfileStringRefined = multineRegex.replaceAllIn(
           dockerfileString,
-          lineSep
+          sys.props("line.separator")
         )
         assert(dockerfileStringRefined == expected)
       }
@@ -126,11 +125,11 @@ object DockerModuleTest extends TestSuite {
             |USER user1
             |COPY out.jar /out.jar
             |ENTRYPOINT ["java", "-jar", "/out.jar"]""".stripMargin,
-          lineSep
+          sys.props("line.separator")
         )
         val dockerfileStringRefined = multineRegex.replaceAllIn(
           dockerfileString,
-          lineSep
+          sys.props("line.separator")
         )
         assert(dockerfileStringRefined == expected)
       }
