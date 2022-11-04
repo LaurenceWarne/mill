@@ -53,6 +53,7 @@ trait JmhModule extends JavaModule {
       val dest = T.ctx().dest
       val (sourcesDir, _) = generateBenchmarkSources()
       val sources = os.walk(sourcesDir).filter(os.isFile)
+      println((runClasspath() ++ generatorDeps()).map(_.path.toString).mkString(":"))
       os.proc(
         "javac",
         sources.map(_.toString),
@@ -80,7 +81,7 @@ trait JmhModule extends JavaModule {
       Jvm.runSubprocess(
         "org.openjdk.jmh.generators.bytecode.JmhBytecodeGenerator",
         (runClasspath() ++ generatorDeps()).map(_.path),
-        mainArgs = Array(
+        mainArgs = Seq(
           compile().classes.path.toString,
           sourcesDir.toString,
           resourcesDir.toString,
