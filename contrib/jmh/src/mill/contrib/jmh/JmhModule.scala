@@ -53,12 +53,24 @@ trait JmhModule extends JavaModule {
       val dest = T.ctx().dest
       val (sourcesDir, _) = generateBenchmarkSources()
       val sources = os.walk(sourcesDir).filter(os.isFile)
-      println((runClasspath() ++ generatorDeps()).map(_.path.toString).mkString(":"))
+      println("-----------SOURCES-----------")
+      println(sources.length)
+      println(sources.foreach(println))
+      println("----------CLASSPATH----------")
+      println((runClasspath() ++ generatorDeps()).length)
+      (runClasspath() ++ generatorDeps()).map(_.path.toString).foreach(println)
+      println("----------------------------")
+      println(dest)
+      println("----------------------------")
+      println("----------------------------")
+
       os.proc(
-        "javac",
+        Jvm.jdkTool("javac"),
         sources.map(_.toString),
         "-cp",
-        (runClasspath() ++ generatorDeps()).map(_.path.toString).mkString(":"),
+        (runClasspath() ++ generatorDeps()).map(_.path.toString).mkString(
+          java.io.File.pathSeparator
+        ),
         "-d",
         dest
       ).call(dest)

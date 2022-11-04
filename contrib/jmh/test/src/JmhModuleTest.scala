@@ -43,7 +43,7 @@ object JmhModuleTest extends TestSuite {
                          |mill.contrib.jmh.Bench2.sqrt
                          |mill.contrib.jmh.Bench1.measureShared
                          |mill.contrib.jmh.Bench1.measureUnshared""".stripMargin
-        val out = os.read.lines(outFile).map(_.trim).mkString("\n")
+        val out = os.read.lines(outFile).map(_.trim).mkString(System.lineSeparator())
         assert(out == expected)
       }
     }
